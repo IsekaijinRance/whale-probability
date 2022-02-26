@@ -5,3 +5,6 @@ Alternatively, this is also a programming practice which will evolve as i notice
 
 ## Requirements
  This is a simple script that should work in any python environment that runs python 3.
+
+## Licensing
+This project code is licensed under the MIT License so you can pretty much do whatever you want with it. The code here should be simple enought that any beginner coder who has basic concepts down should be able to replicate with about an hour of effort.
