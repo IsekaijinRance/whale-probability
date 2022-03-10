@@ -7,6 +7,22 @@ from multiprocessing import cpu_count, Pool
 
 SINGLE_THREAD_THRESHOLD = 75000
 
+def formatRunTime(ns ,precision = 0):
+    result = ""
+    
+    total_seconds = ns / 1000000000
+    minutes = math.floor(total_seconds/60)
+    seconds = total_seconds % 60
+
+    if precision:
+        seconds = round(seconds, precision)
+
+    if minutes:
+        result += f"{minutes} minutes"
+        
+    result += f"{seconds} seconds"
+    return result
+
 def rollWhale():
     return "male" if (random.randint(1,100) % 2 == 0) else "female" 
 
@@ -84,10 +100,10 @@ def main(iterations, single_thread, mode):
 
     ###Finished computing 
     timer_end=time.time_ns()
-    run_time = (timer_end - timer_start) / 1000000000
+    run_time = formatRunTime(timer_end - timer_start)
 
     ### print the result of the data.
-    print(f'Finished computing {iterations} pair of whales in {run_time} seconds.')
+    print(f'Finished computing {iterations} pair of whales in {run_time}.')
     print('These are the results:')
     for p in result:
         print(f"{p} pair: \t {result[p]} \t ({round(result[p]/iterations*100, 2)}%)")
