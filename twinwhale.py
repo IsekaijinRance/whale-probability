@@ -1,7 +1,10 @@
 import math
 import random
+import time
+
 import argparse
 from multiprocessing import cpu_count, Pool
+
 SINGLE_THREAD_THRESHOLD = 75000
 
 def rollWhale():
@@ -49,13 +52,14 @@ def main(iterations, single_thread, mode):
 
     ### Activating singlethreaded mode.
     if single_thread:
-        print(f"Using a single thread to run the simulation with a sample size of {iterations} pairs of whales.")    
+        print(f"Using a single thread to run the simulation with a sample size of {iterations} pairs of whales.") 
+        timer_start = time.time_ns()
         result = calculateWhaleCombinations(iterations, mode)
     
     ### Activating multithreaded mode.
     else:
         print(f"Found {cpu_count()} cpu units to run the simulation with a sample size of {iterations} pairs of whales.")
-        
+        timer_start = time.time_ns()
         ### Determine how to spread the number of iterations between cores taking into account when the user inputs an uneven ammount to the number of cpu units available.
         pn = math.floor(iterations / cpu_count())
         pool_args=[]
@@ -78,8 +82,13 @@ def main(iterations, single_thread, mode):
                     else:
                         result[key] = pool_result[key]
 
-    ###Finished computing so print the result of the data.
-    print(f'Finished computing {iterations} pair of whales and these are the results:')
+    ###Finished computing 
+    timer_end=time.time_ns()
+    run_time = (timer_end - timer_start) / 1000000000
+
+    ### print the result of the data.
+    print(f'Finished computing {iterations} pair of whales in {run_time} seconds.')
+    print('These are the results:')
     for p in result:
         print(f"{p} pair: \t {result[p]} \t ({round(result[p]/iterations*100, 2)}%)")
     print('')
